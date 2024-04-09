@@ -9,13 +9,14 @@ datasource db {
 
 model Patient {
   id             Int             @id @default(autoincrement())
+  role           Role
   name           String
   email          String          @unique
   password       String
-  role           Role
   medicalHistory Medicalreport[]
-  primaryDoctor  Doctor          @relation(fields: [doctorId], references: [id])
-  doctorId       Int
+  primaryDoctor  Doctor?         @relation(fields: [doctorId], references: [id])
+  doctorId       Int?
+  appointment    Appoitment[]
 }
 
 model Medicalreport {
@@ -35,10 +36,23 @@ model Doctor {
   name           String
   email          String          @unique
   password       String
-  qualifications String
   role           Role
+  qualifications String?
   patients       Patient[]
+  appointments   Appoitment[]
   Medicalreport  Medicalreport[]
+  Specialty      Specialty?      @relation(fields: [specialtyId], references: [id])
+  specialtyId    Int?
+}
+
+model Appoitment {
+  id              Int     @id @default(autoincrement())
+  time            String
+  verified        Boolean @default(false)
+  doctorId        Int
+  patientId       Int
+  appointmentWith Doctor  @relation(fields: [doctorId], references: [id])
+  requestedBy     Patient @relation(fields: [patientId], references: [id])
 }
 
 model Admin {
@@ -46,6 +60,12 @@ model Admin {
   email    String @unique
   password String
   name     String
+}
+
+model Specialty {
+  id      Int      @id @default(autoincrement())
+  title   String   @unique
+  doctors Doctor[]
 }
 
 enum Role {
