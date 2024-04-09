@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { userSchema } from "../../zod/user.zod";
 import { STATUS_CODE } from "../../constants";
 import { PrismaClient } from "@prisma/client";
+import { userSchema } from "../../zod/user.zod";
+
 import createToken from "../../utils/create.token";
 import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
@@ -32,7 +33,7 @@ export const patientSignup = async (req: Request, res: Response) => {
       role: role,
     },
   });
-  const token = createToken({ email: email, role });
+  const token = createToken({ email: email, role, id: newPatient.id });
   return res
     .status(STATUS_CODE.ACCEPTED)
     .json({ msg: "patient created successfully", token: token });
@@ -63,7 +64,7 @@ export const patientSignin = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = createToken({ email, role: patient.role });
+    const token = createToken({ email, role: patient.role, id: patient.id });
 
     return res
       .status(200)

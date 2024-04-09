@@ -9,7 +9,7 @@ datasource db {
 
 model Patient {
   id             Int             @id @default(autoincrement())
-  role           Role
+  role           Role            @default(PATIENT)
   name           String
   email          String          @unique
   password       String
@@ -36,7 +36,7 @@ model Doctor {
   name           String
   email          String          @unique
   password       String
-  role           Role
+  role           Role            @default(DOCTOR)
   qualifications String?
   patients       Patient[]
   appointments   Appoitment[]
@@ -53,6 +53,7 @@ model Appoitment {
   patientId       Int
   appointmentWith Doctor  @relation(fields: [doctorId], references: [id])
   requestedBy     Patient @relation(fields: [patientId], references: [id])
+  completed       Boolean @default(false)
 }
 
 model Admin {

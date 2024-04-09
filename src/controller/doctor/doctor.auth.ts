@@ -33,7 +33,7 @@ export const signUp = async (req: Request, res: Response) => {
       role: role,
     },
   });
-  const token = createToken({ email: email, role });
+  const token = createToken({ email: email, role, id: newDoctor.id });
   return res
     .status(STATUS_CODE.ACCEPTED)
     .json({ msg: "doctor id created successfully", token: token });
@@ -64,7 +64,7 @@ export const doctorSignin = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const token = createToken({ email, role: doctor.role });
+    const token = createToken({ email, role: doctor.role, id: doctor.id });
 
     return res
       .status(200)

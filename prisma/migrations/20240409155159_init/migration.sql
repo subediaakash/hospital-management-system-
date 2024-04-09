@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Doctor" ALTER COLUMN "role" SET DEFAULT 'DOCTOR';
+
+-- AlterTable
+ALTER TABLE "Patient" ALTER COLUMN "role" SET DEFAULT 'PATIENT';
