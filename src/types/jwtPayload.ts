@@ -1,5 +1,5 @@
 export interface IPayload {
   email: String;
-  role: string;
+  role?: string;
   id: Number;
 }
