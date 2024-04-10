@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { doctorSignin, signUp } from "../controller/doctor/doctor.auth";
-import { setupProfile } from "../controller/doctor/doctor.application";
+import {
+  completeAppointment,
+  setupProfile,
+  updateMedicalReport,
+} from "../controller/doctor/doctor.application";
 import { authMiddleware } from "../middleware/jwt.auth";
 import { doctorRoleCheck } from "../middleware/doctor.role";
 export const doctorRouter = Router();
@@ -12,4 +16,17 @@ doctorRouter.put(
   authMiddleware,
   doctorRoleCheck,
   setupProfile
+);
+
+doctorRouter.post(
+  "/doctor/report/:patientId",
+  authMiddleware,
+  doctorRoleCheck,
+  updateMedicalReport
+);
+doctorRouter.put(
+  "/doctor/appointment/:appointmentId",
+  authMiddleware,
+  doctorRoleCheck,
+  completeAppointment
 );

@@ -42,3 +42,48 @@ export const setupProfile = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const updateMedicalReport = async (req: Request, res: Response) => {
+  try {
+    const { symptoms, tests, results, prescription } = req.body;
+    const patientId = parseInt(req.params.patientId);
+    const doctorId = res.locals.user.id;
+
+    const newMedicalReport = await prisma.medicalreport.create({
+      data: {
+        symptoms: symptoms,
+        tests: tests,
+        results: results,
+        prescription: prescription,
+        patientId: patientId,
+        doctorId: doctorId,
+      },
+    });
+
+    return res.status(STATUS_CODE.ACCEPTED).json({
+      msg: "Medical report created successfully",
+      medicalReport: newMedicalReport,
+    });
+  } catch (error) {
+    console.error("Error creating medical report:", error);
+    return res
+      .status(STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json({ error: "Error creating medical report" });
+  }
+};
+
+export const completeAppointment = async (req: Request, res: Response) => {
+  const appointmentId = parseInt(req.params.appointmentId);
+  const completeAppointment = await prisma.appoitment.update({
+    where: {
+      id: appointmentId,
+    },
+    data: {
+      completed: true,
+    },
+  });
+  return res.status(STATUS_CODE.ACCEPTED).json({
+    msg: "appointment status updated successfully",
+    appointment: completeAppointment,
+  });
+};
