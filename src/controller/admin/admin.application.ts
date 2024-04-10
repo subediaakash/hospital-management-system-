@@ -44,3 +44,18 @@ export const deleteRequest = async (req: Request, res: Response) => {
     .status(STATUS_CODE.ACCEPTED)
     .json({ msg: "the appointment deleted successfully" });
 };
+
+export const addSpeciality = async (req: Request, res: Response) => {
+  const title = req.body.title;
+  if (!title || title.length == 0) {
+    return res.status(STATUS_CODE.BAD_REQUEST).json({ msg: "title not given" });
+  }
+  const newSpeciality = await prisma.specialty.create({
+    data: {
+      title: title,
+    },
+  });
+  return res
+    .status(STATUS_CODE.ACCEPTED)
+    .json({ msg: "title added successfully", title: newSpeciality });
+};

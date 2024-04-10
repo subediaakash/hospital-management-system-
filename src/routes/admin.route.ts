@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { adminSignin, adminSignUP } from "../controller/admin/admin.auth";
 import {
+  addSpeciality,
   deleteRequest,
   getRequests,
   verifyRequest,
@@ -29,4 +30,11 @@ adminRouter.delete(
   authMiddleware,
   adminRoleCheck,
   deleteRequest
+);
+
+adminRouter.post(
+  "/admin/addrole",
+  authMiddleware,
+  adminRoleCheck,
+  addSpeciality
 );
