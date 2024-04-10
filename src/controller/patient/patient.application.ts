@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const bookAppointment = async (req: Request, res: Response) => {
+export const bookAppointment = async (req: Request, res: Response) => {
   const doctorId = req.params.doctorId;
   const { time } = req.body;
   const patientId = res.locals.user.id;
@@ -33,4 +33,14 @@ const bookAppointment = async (req: Request, res: Response) => {
   }
 };
 
-export default bookAppointment;
+export const getDoctors = async (req: Request, res: Response) => {
+  try {
+    const listOfDoctors = await prisma.doctor.findMany({});
+    return res.status(STATUS_CODE.ACCEPTED).json({ doctors: listOfDoctors });
+  } catch (error) {
+    console.error("Error fetching doctors:", error);
+    return res
+      .status(STATUS_CODE.INTERNAL_SERVER_ERROR)
+      .json({ error: "Error fetching doctors" });
+  }
+};
