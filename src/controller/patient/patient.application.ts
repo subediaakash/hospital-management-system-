@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS_CODE } from "../../constants";
 import { PrismaClient } from "@prisma/client";
+import { number } from "zod";
 
 const prisma = new PrismaClient();
 
@@ -43,4 +44,29 @@ export const getDoctors = async (req: Request, res: Response) => {
       .status(STATUS_CODE.INTERNAL_SERVER_ERROR)
       .json({ error: "Error fetching doctors" });
   }
+};
+
+export const getPatient = async (req: Request, res: Response) => {
+  const patientId = res.locals.user.id;
+  const currentUser = await prisma.patient.findUnique({
+    where: {
+      id: patientId,
+    },
+  });
+  return res.status(STATUS_CODE.ACCEPTED).json({ user: currentUser });
+};
+
+export const getMedicalRecord = async (req: Request, res: Response) => {
+  const patientId = res.locals.user.id;
+  try {
+    const medicalHistory = await prisma.medicalreport.findMany({
+      where: {
+        patientId: patientId,
+      },
+    });
+    return res.status(STATUS_CODE.ACCEPTED).json({ medicalHistory });
+  } catch (error) {}
+  return res
+    .status(STATUS_CODE.EXPECTATION_FAILED)
+    .json({ msg: "medical history not found" });
 };

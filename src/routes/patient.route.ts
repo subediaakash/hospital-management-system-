@@ -6,6 +6,8 @@ import {
 import {
   bookAppointment,
   getDoctors,
+  getMedicalRecord,
+  getPatient,
 } from "../controller/patient/patient.application";
 import { authMiddleware } from "../middleware/jwt.auth";
 import { patientRoleCheck } from "../middleware/patient.role";
@@ -23,4 +25,12 @@ patientRouter.get(
   authMiddleware,
   patientRoleCheck,
   getDoctors
+);
+
+patientRouter.get("/patient/me", authMiddleware, patientRoleCheck, getPatient);
+patientRouter.get(
+  "/patient/history",
+  authMiddleware,
+  patientRoleCheck,
+  getMedicalRecord
 );
