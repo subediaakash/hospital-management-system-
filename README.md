@@ -36,3 +36,7 @@ This project implements a simple hospital management system using a REST API wit
 2. **Build and Run:**
    - Open a terminal in the project directory.
    - Run `docker-compose up` to build the Docker image and start the API.
+
+## Contributing:
+
+Contributions via pull requests are welcome to enhance and update the system.
