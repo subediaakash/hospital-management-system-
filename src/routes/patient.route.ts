@@ -34,3 +34,10 @@ patientRouter.get(
   patientRoleCheck,
   getMedicalRecord
 );
+
+patientRouter.get(
+  "/patient/doctors",
+  authMiddleware,
+  patientRoleCheck,
+  getDoctors
+);

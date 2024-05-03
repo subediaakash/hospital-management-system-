@@ -36,7 +36,15 @@ export const bookAppointment = async (req: Request, res: Response) => {
 
 export const getDoctors = async (req: Request, res: Response) => {
   try {
-    const listOfDoctors = await prisma.doctor.findMany({});
+    const listOfDoctors = await prisma.doctor.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    console.log(listOfDoctors);
+
     return res.status(STATUS_CODE.ACCEPTED).json({ doctors: listOfDoctors });
   } catch (error) {
     console.error("Error fetching doctors:", error);
@@ -53,7 +61,11 @@ export const getPatient = async (req: Request, res: Response) => {
       id: patientId,
     },
   });
-  return res.status(STATUS_CODE.ACCEPTED).json({ user: currentUser });
+  return res.status(STATUS_CODE.ACCEPTED).json({
+    name: currentUser?.name,
+    id: currentUser?.id,
+    email: currentUser?.email,
+  });
 };
 
 export const getMedicalRecord = async (req: Request, res: Response) => {
