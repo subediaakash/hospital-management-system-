@@ -5,6 +5,7 @@ import {
 } from "../controller/patient/patient.auth";
 import {
   bookAppointment,
+  getDoctorById,
   getDoctors,
   getMedicalRecord,
   getPatient,
@@ -40,4 +41,11 @@ patientRouter.get(
   authMiddleware,
   patientRoleCheck,
   getDoctors
+);
+
+patientRouter.get(
+  "/patient/doctor/:doctorId",
+  authMiddleware,
+  patientRoleCheck,
+  getDoctorById
 );

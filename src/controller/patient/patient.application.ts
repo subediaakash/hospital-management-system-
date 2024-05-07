@@ -45,7 +45,7 @@ export const getDoctors = async (req: Request, res: Response) => {
 
     console.log(listOfDoctors);
 
-    return res.status(STATUS_CODE.ACCEPTED).json({ doctors: listOfDoctors });
+    return res.status(STATUS_CODE.ACCEPTED).json(listOfDoctors);
   } catch (error) {
     console.error("Error fetching doctors:", error);
     return res
@@ -81,4 +81,15 @@ export const getMedicalRecord = async (req: Request, res: Response) => {
   return res
     .status(STATUS_CODE.EXPECTATION_FAILED)
     .json({ msg: "medical history not found" });
+};
+
+export const getDoctorById = async (req: Request, res: Response) => {
+  const doctorId = parseInt(req.params.doctorId);
+  const doctor = await prisma.doctor.findUnique({
+    where: {
+      id: doctorId,
+    },
+  });
+  const doctorDetails = [doctor?.id, doctor?.name];
+  return res.status(200).json(doctorDetails);
 };

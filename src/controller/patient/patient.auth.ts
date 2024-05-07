@@ -16,7 +16,7 @@ export const patientSignup = async (req: Request, res: Response) => {
       error: parsedPayload.error,
     });
   }
-  const existingUser = await prisma.doctor.findUnique({
+  const existingUser = await prisma.patient.findUnique({
     where: {
       email,
     },
